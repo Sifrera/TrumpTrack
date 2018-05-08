@@ -1,23 +1,18 @@
 import urllib.request
 from bs4 import BeautifulSoup
 
+
 class Scraper:
     def __init__(self, site):
         self.site = site
 
     def scrape(self):
-        r = urllib.request.urlopen(self.site)
-        html = r.read()
-        parser = "html.parser"
-        sp = BeautifulSoup(html, parser)
-        for tag in sp.find_all("a"):
+        response = urllib.request.urlopen(self.site)
+        html = response.read()
+        soup = BeautifulSoup(html, "html.parser")
+        for tag in soup.find_all("a"):
             url = tag.get("href")
-            if url is None:
-                continue
-            if "html" in url:
-                if "Trump" or "trump" in url:
-                    print("\n" + url)
+            if url and "html" in url:
+                print("\n" + url)
 
-
-news = "https://google.com/"
-Scraper(news).scrape()
+Scraper('https://news.google.com/').scrape()
